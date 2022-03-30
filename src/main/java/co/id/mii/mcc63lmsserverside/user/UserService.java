@@ -27,15 +27,14 @@ public class UserService {
 
   public User getUserById(Long userId) {
     return userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalStateException(
-            "user with id " + userId + " does not exists"));
+        .orElseThrow(() -> new UserNotFoundException(userId));
   }
 
-  public void addNewUser(UserDto userDto) {
+  public UserDto addNewUser(UserDto userDto) {
     emailChecker(userDto.getEmail());
     User user = userMapper.userDTOToUser(userDto);
     user.setIsActive(false);
-    userRepository.save(user);
+    return userMapper.userToUserDTO(userRepository.save(user));
   }
 
   public void deleteUser(Long userId) {
@@ -43,8 +42,7 @@ public class UserService {
     userRepository.deleteById(userId);
   }
 
-  @Transactional
-  public void updateUser(Long userId, UserDto userDto) {
+  public UserDto updateUser(Long userId, UserDto userDto) {
     User user = getUserById(userId);
 
     if (userDto.getEmail() != null &&
@@ -58,6 +56,8 @@ public class UserService {
         userDto.getPassword().length() > 0) {
       user.setPassword(userDto.getPassword());
     }
+
+    return userMapper.userToUserDTO(userRepository.save(user));
   }
 
   private void emailChecker(String email) {
@@ -65,7 +65,7 @@ public class UserService {
         .findUserByEmail(email);
 
     if (userOptional.isPresent()) {
-      throw new IllegalStateException("email has already registered");
+      throw new IllegalStateException("Email is already registered");
     }
   }
 }
