@@ -8,12 +8,14 @@ package co.id.mii.mcc63lmsserverside.content;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 /**
  *
  * @author Agung
  */
+@Service
 public class ContentService {
     
     private ContentRepository contentRepository;

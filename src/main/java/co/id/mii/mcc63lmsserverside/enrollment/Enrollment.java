@@ -5,12 +5,16 @@
  */
 package co.id.mii.mcc63lmsserverside.enrollment;
 
+import co.id.mii.mcc63lmsserverside.course.Course;
+import co.id.mii.mcc63lmsserverside.user.User;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +42,11 @@ public class Enrollment {
     @Column(nullable = false)
     private LocalDate expire_date;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
 }
