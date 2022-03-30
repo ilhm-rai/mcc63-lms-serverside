@@ -5,11 +5,20 @@
  */
 package co.id.mii.mcc63lmsserverside.course;
 
+import co.id.mii.mcc63lmsserverside.category.Category;
+import co.id.mii.mcc63lmsserverside.enrollment.Enrollment;
+import co.id.mii.mcc63lmsserverside.user.User;
+import co.id.mii.mcc63lmsserverside.module.Module;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +47,17 @@ public class Course {
     private Long price;
     
     private Boolean isActive;
-
+    
+    @ManyToOne
     private User user;
+
+    @ManyToOne
     private Category category;
+    
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Module> modules;
+    
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Enrollment> enrollments;
 }

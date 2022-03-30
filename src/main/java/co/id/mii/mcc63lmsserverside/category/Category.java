@@ -5,6 +5,9 @@
  */
 package co.id.mii.mcc63lmsserverside.category;
 
+import co.id.mii.mcc63lmsserverside.course.Course;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import javax.persistence.*;
 import lombok.*;
 
@@ -24,4 +27,8 @@ public class Category {
     
     @Column(nullable = false)
     private String name;
+    
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Course> courses;
 }
