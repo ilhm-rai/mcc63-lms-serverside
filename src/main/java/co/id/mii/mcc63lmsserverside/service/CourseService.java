@@ -8,8 +8,8 @@ package co.id.mii.mcc63lmsserverside.service;
 import co.id.mii.mcc63lmsserverside.model.Dto.CourseDto;
 import co.id.mii.mcc63lmsserverside.repository.CourseRepository;
 import co.id.mii.mcc63lmsserverside.model.Course;
-import co.id.mii.mcc63lmsserverside.service.CategoryService;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,12 +25,14 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserService userService;
     private final CategoryService categoryService;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService) {
+    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService, ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
         this.userService = userService;
         this.categoryService = categoryService;
+        this.modelMapper = modelMapper;
     }
 
     public List<Course> getAll() {
@@ -43,21 +45,18 @@ public class CourseService {
     }
 
     public Course create(CourseDto courseDto) {
-        Course course = new Course();
-        course.setTitle(courseDto.getTitle());
-        course.setDescription(courseDto.getDescription());
-        course.setPrice(courseDto.getPrice());
+        Course course = modelMapper.map(courseDto, Course.class);
         course.setIsActive(false);
         course.setUser(userService.getUserById(courseDto.getUserId()));
         course.setCategory(categoryService.getById(courseDto.getCategoryId()));
         return courseRepository.save(course);
     }
 
-    public Course update(Long id, CourseDto courseDto) {
-        Course course = getById(id);
+    public Course update(Long id, Course course) {
+        Course c = getById(id);
         course.setId(id);
-        course.setUser(userService.getUserById(courseDto.getUserId()));
-        course.setCategory(categoryService.getById(courseDto.getCategoryId()));
+        course.setUser(c.getUser());
+        course.setCategory(c.getCategory());
         return courseRepository.save(course);
     }
 

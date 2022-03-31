@@ -52,8 +52,8 @@ public class CourseController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody CourseDto courseDto) {
-        return new ResponseEntity(courseService.update(id, courseDto), HttpStatus.CREATED);
+    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course course) {
+        return new ResponseEntity(courseService.update(id, course), HttpStatus.CREATED);
     }
     
     @DeleteMapping("/{id}")

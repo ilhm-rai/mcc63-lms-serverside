@@ -5,7 +5,6 @@
  */
 package co.id.mii.mcc63lmsserverside.model;
 
-import co.id.mii.mcc63lmsserverside.model.Course;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.*;

@@ -44,7 +44,7 @@ public class UserController {
   @PostMapping
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDto registerNewUser(@RequestBody UserDto userDto) {
+  public User registerNewUser(@RequestBody UserDto userDto) {
     return userService.addNewUser(userDto);
   }
 
@@ -57,7 +57,7 @@ public class UserController {
   @PutMapping(path = "{userId}")
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDto updateUser(
+  public User updateUser(
       @PathVariable("userId") Long userId, @RequestBody UserDto userDto) {
 
     return userService.updateUser(userId, userDto);

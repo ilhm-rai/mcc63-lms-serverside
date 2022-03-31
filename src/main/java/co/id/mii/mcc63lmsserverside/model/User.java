@@ -1,8 +1,5 @@
 package co.id.mii.mcc63lmsserverside.model;
 
-import co.id.mii.mcc63lmsserverside.model.Course;
-import co.id.mii.mcc63lmsserverside.model.Role;
-import co.id.mii.mcc63lmsserverside.model.Enrollment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.*;
@@ -49,11 +46,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
-    
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Course> courses;
-    
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments;
 }
