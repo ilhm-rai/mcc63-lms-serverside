@@ -15,7 +15,7 @@ import co.id.mii.mcc63lmsserverside.model.dto.ProfileData;
 import co.id.mii.mcc63lmsserverside.service.ProfileService;
 
 @RestController
-@RequestMapping("profiles")
+@RequestMapping("users")
 public class ProfileController {
 
   private final ProfileService profileService;
@@ -25,13 +25,13 @@ public class ProfileController {
     this.profileService = profileService;
   }
 
-  @GetMapping("{userId}")
+  @GetMapping("{userId}/profile")
   @ResponseBody
   public ProfileData getMyProfile(@PathVariable("userId") Long userId) {
     return profileService.getMyProfile(userId);
   }
 
-  @PutMapping("{userId}")
+  @PutMapping("{userId}/profile")
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
   public ProfileData updateProfile(@PathVariable("userId") Long userId, @RequestBody ProfileData profileData) {
