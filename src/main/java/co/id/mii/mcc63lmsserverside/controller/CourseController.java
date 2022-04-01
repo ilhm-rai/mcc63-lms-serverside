@@ -5,9 +5,10 @@
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.CourseDto;
 import co.id.mii.mcc63lmsserverside.service.CourseService;
 import co.id.mii.mcc63lmsserverside.model.Course;
+import co.id.mii.mcc63lmsserverside.model.dto.CourseData;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,34 +29,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/course")
 public class CourseController {
-    
+
     private CourseService courseService;
 
     @Autowired
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
-    
+
     @GetMapping
     public ResponseEntity<List<Course>> getAll() {
         return new ResponseEntity(courseService.getAll(), HttpStatus.OK);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<Course> getById(@PathVariable Long id) {
         return new ResponseEntity(courseService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Course> create(@RequestBody CourseDto courseDto) {
+    public ResponseEntity<Course> create(@RequestBody CourseData courseDto) {
         return new ResponseEntity(courseService.create(courseDto), HttpStatus.CREATED);
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody CourseDto courseDto) {
+    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody CourseData courseDto) {
         return new ResponseEntity(courseService.update(id, courseDto), HttpStatus.CREATED);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Course> delete(@PathVariable Long id) {
         return new ResponseEntity(courseService.delete(id), HttpStatus.OK);

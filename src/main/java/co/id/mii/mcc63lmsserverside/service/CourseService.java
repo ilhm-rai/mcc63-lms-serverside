@@ -5,15 +5,16 @@
  */
 package co.id.mii.mcc63lmsserverside.service;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.CourseDto;
-import co.id.mii.mcc63lmsserverside.repository.CourseRepository;
-import co.id.mii.mcc63lmsserverside.model.Course;
-import co.id.mii.mcc63lmsserverside.service.CategoryService;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import co.id.mii.mcc63lmsserverside.model.Course;
+import co.id.mii.mcc63lmsserverside.model.dto.CourseData;
+import co.id.mii.mcc63lmsserverside.repository.CourseRepository;
 
 /**
  *
@@ -38,11 +39,11 @@ public class CourseService {
     }
 
     public Course getById(Long id) {
-        return courseRepository.findById(id).orElseThrow(()
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not Found."));
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not Found."));
     }
 
-    public Course create(CourseDto courseDto) {
+    public Course create(CourseData courseDto) {
         Course course = new Course();
         course.setTitle(courseDto.getTitle());
         course.setDescription(courseDto.getDescription());
@@ -53,7 +54,7 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public Course update(Long id, CourseDto courseDto) {
+    public Course update(Long id, CourseData courseDto) {
         Course course = getById(id);
         course.setId(id);
         course.setUser(userService.getUserById(courseDto.getUserId()));
