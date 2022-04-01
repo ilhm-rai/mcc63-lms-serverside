@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Mcc63LmsServersideApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Mcc63LmsServersideApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(Mcc63LmsServersideApplication.class, args);
+        System.out.println("Application is running...");
+    }
 }

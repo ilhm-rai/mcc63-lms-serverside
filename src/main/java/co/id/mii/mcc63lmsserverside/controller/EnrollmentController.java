@@ -5,6 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
+import co.id.mii.mcc63lmsserverside.model.dto.EnrollmentData;
 import co.id.mii.mcc63lmsserverside.service.EnrollmentService;
 import co.id.mii.mcc63lmsserverside.model.Enrollment;
 import java.util.List;
@@ -46,13 +47,13 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Enrollment> create(@RequestBody Enrollment enrollment) {
-        return new ResponseEntity(enrollmentService.create(enrollment), HttpStatus.OK);
+    public ResponseEntity<Enrollment> create(@RequestBody EnrollmentData enrollmentData) {
+        return new ResponseEntity(enrollmentService.create(enrollmentData), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Enrollment> update(@PathVariable Long id, @RequestBody Enrollment enrollment) {
-        return new ResponseEntity(enrollmentService.update(id, enrollment), HttpStatus.OK);
+        return new ResponseEntity(enrollmentService.update(id, enrollment), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

@@ -48,13 +48,13 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> create(@RequestBody CourseData courseDto) {
-        return new ResponseEntity(courseService.create(courseDto), HttpStatus.CREATED);
+    public ResponseEntity<Course> create(@RequestBody CourseData courseData) {
+        return new ResponseEntity(courseService.create(courseData), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody CourseData courseDto) {
-        return new ResponseEntity(courseService.update(id, courseDto), HttpStatus.CREATED);
+    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course course) {
+        return new ResponseEntity(courseService.update(id, course), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

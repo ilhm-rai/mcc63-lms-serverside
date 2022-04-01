@@ -5,6 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.model.dto;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseData {
+public class EnrollmentData {
 
     private Long id;
-    private String title;
-    private String description;
-    private Long price;
+    private LocalDate enroll_date;
+    private LocalDate expire_date;
     private Long userId;
-    private Long categoryId;
+    private Long courseId;
 }

@@ -16,12 +16,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseData {
+public class ModuleData {
 
     private Long id;
     private String title;
-    private String description;
-    private Long price;
-    private Long userId;
-    private Long categoryId;
+    private Long courseId;
 }
