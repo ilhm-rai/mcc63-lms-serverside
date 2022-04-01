@@ -7,7 +7,9 @@ package co.id.mii.mcc63lmsserverside.service;
 
 import co.id.mii.mcc63lmsserverside.repository.ContentRepository;
 import co.id.mii.mcc63lmsserverside.model.Content;
+import co.id.mii.mcc63lmsserverside.model.Dto.ContentDto;
 import java.util.List;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class ContentService {
     
     private ContentRepository contentRepository;
+    private ModuleService moduleService;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public ContentService(ContentRepository contentRepository) {
+    public ContentService(ContentRepository contentRepository, ModuleService moduleService, ModelMapper modelMapper) {
         this.contentRepository = contentRepository;
+        this.moduleService = moduleService;
+        this.modelMapper = modelMapper;
     }
 
     public List<Content> getAll() {
@@ -36,13 +42,16 @@ public class ContentService {
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not Found"));
     }
     
-    public Content create(Content content) {
+    public Content create(ContentDto contentDto) {
+        Content content = modelMapper.map(contentDto, Content.class);
+        content.setModule(moduleService.getById(contentDto.getModuleId()));
         return contentRepository.save(content);
     }
     
     public Content update(Long id, Content content) {
-        getById(id);
+        Content c = getById(id);
         content.setId(id);
+        content.setModule(c.getModule());
         return contentRepository.save(content);
     }
     
