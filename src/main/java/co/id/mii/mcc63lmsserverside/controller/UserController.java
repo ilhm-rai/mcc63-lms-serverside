@@ -1,7 +1,10 @@
 package co.id.mii.mcc63lmsserverside.controller;
 
 import co.id.mii.mcc63lmsserverside.model.User;
-import co.id.mii.mcc63lmsserverside.model.Dto.UserDto;
+import co.id.mii.mcc63lmsserverside.model.dto.request.ChangePassword;
+import co.id.mii.mcc63lmsserverside.model.dto.request.CreateUser;
+import co.id.mii.mcc63lmsserverside.model.dto.request.UpdateUser;
+import co.id.mii.mcc63lmsserverside.model.dto.response.UserDataResponse;
 import co.id.mii.mcc63lmsserverside.service.UserService;
 import java.util.List;
 
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "user")
+@RequestMapping(path = "users")
 public class UserController {
 
   private final UserService userService;
@@ -44,12 +47,12 @@ public class UserController {
   @PostMapping
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public User registerNewUser(@RequestBody UserDto userDto) {
-    return userService.addNewUser(userDto);
+  public UserDataResponse registerNewUser(@RequestBody CreateUser createUser) {
+    return userService.addNewUser(createUser);
   }
 
   @DeleteMapping(path = "{userId}")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteUser(@PathVariable("userId") Long userId) {
     userService.deleteUser(userId);
   }
@@ -57,9 +60,17 @@ public class UserController {
   @PutMapping(path = "{userId}")
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public User updateUser(
-      @PathVariable("userId") Long userId, @RequestBody UserDto userDto) {
+  public UserDataResponse updateUser(
+      @PathVariable("userId") Long userId, @RequestBody UpdateUser updateUser) {
 
-    return userService.updateUser(userId, userDto);
+    return userService.updateUser(userId, updateUser);
+  }
+
+  @PutMapping(path = "{userId}/change-password")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void changePassword(
+      @PathVariable("userId") Long userId, @RequestBody ChangePassword changePassword) {
+
+    userService.changePassword(userId, changePassword);
   }
 }

@@ -5,7 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.EnrollmentDto;
+import co.id.mii.mcc63lmsserverside.model.dto.EnrollmentData;
 import co.id.mii.mcc63lmsserverside.service.EnrollmentService;
 import co.id.mii.mcc63lmsserverside.model.Enrollment;
 import java.util.List;
@@ -47,8 +47,8 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Enrollment> create(@RequestBody EnrollmentDto enrollmentDto) {
-        return new ResponseEntity(enrollmentService.create(enrollmentDto), HttpStatus.CREATED);
+    public ResponseEntity<Enrollment> create(@RequestBody EnrollmentData enrollmentData) {
+        return new ResponseEntity(enrollmentService.create(enrollmentData), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

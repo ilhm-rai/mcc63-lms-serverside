@@ -7,7 +7,7 @@ package co.id.mii.mcc63lmsserverside.controller;
 
 import co.id.mii.mcc63lmsserverside.service.ContentService;
 import co.id.mii.mcc63lmsserverside.model.Content;
-import co.id.mii.mcc63lmsserverside.model.Dto.ContentDto;
+import co.id.mii.mcc63lmsserverside.model.dto.ContentData;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/content")
 public class ContentController {
-    
+
     private ContentService contentService;
 
     @Autowired
@@ -47,8 +47,8 @@ public class ContentController {
     }
 
     @PostMapping
-    public ResponseEntity<Content> create(@RequestBody ContentDto contentDto) {
-        return new ResponseEntity(contentService.create(contentDto), HttpStatus.CREATED);
+    public ResponseEntity<Content> create(@RequestBody ContentData contentData) {
+        return new ResponseEntity(contentService.create(contentData), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

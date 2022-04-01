@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.id.mii.mcc63lmsserverside.model.Dto;
+package co.id.mii.mcc63lmsserverside.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,11 +16,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentDto {
+public class ModuleData {
 
     private Long id;
     private String title;
-    private String description;
-    private String videoUrl;
-    private Long moduleId;
+    private Long courseId;
 }

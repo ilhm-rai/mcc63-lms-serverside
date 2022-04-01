@@ -5,15 +5,17 @@
  */
 package co.id.mii.mcc63lmsserverside.service;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.CourseDto;
-import co.id.mii.mcc63lmsserverside.repository.CourseRepository;
-import co.id.mii.mcc63lmsserverside.model.Course;
 import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import co.id.mii.mcc63lmsserverside.model.Course;
+import co.id.mii.mcc63lmsserverside.model.dto.CourseData;
+import co.id.mii.mcc63lmsserverside.repository.CourseRepository;
 
 /**
  *
@@ -28,7 +30,8 @@ public class CourseService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService, ModelMapper modelMapper) {
+    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService,
+            ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
         this.userService = userService;
         this.categoryService = categoryService;
@@ -40,11 +43,11 @@ public class CourseService {
     }
 
     public Course getById(Long id) {
-        return courseRepository.findById(id).orElseThrow(()
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not Found."));
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not Found."));
     }
 
-    public Course create(CourseDto courseDto) {
+    public Course create(CourseData courseDto) {
         Course course = modelMapper.map(courseDto, Course.class);
         course.setIsActive(false);
         course.setUser(userService.getUserById(courseDto.getUserId()));

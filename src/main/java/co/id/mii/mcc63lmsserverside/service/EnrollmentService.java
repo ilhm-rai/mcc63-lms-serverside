@@ -5,7 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.service;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.EnrollmentDto;
+import co.id.mii.mcc63lmsserverside.model.dto.EnrollmentData;
 import co.id.mii.mcc63lmsserverside.repository.EnrollmentRepository;
 import co.id.mii.mcc63lmsserverside.model.Enrollment;
 import java.util.List;
@@ -28,7 +28,8 @@ public class EnrollmentService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EnrollmentService(EnrollmentRepository enrollmentRepository, UserService userService, CourseService courseService, ModelMapper modelMapper) {
+    public EnrollmentService(EnrollmentRepository enrollmentRepository, UserService userService,
+            CourseService courseService, ModelMapper modelMapper) {
         this.enrollmentRepository = enrollmentRepository;
         this.userService = userService;
         this.courseService = courseService;
@@ -40,15 +41,15 @@ public class EnrollmentService {
     }
 
     public Enrollment getById(Long id) {
-        return enrollmentRepository.findById(id).orElseThrow(()
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Enrollment not Found"));
+        return enrollmentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Enrollment not Found"));
     }
 
-    public Enrollment create(EnrollmentDto enrollmentDto) {
-        Enrollment enrollment = modelMapper.map(enrollmentDto, Enrollment.class);
+    public Enrollment create(EnrollmentData enrollmentData) {
+        Enrollment enrollment = modelMapper.map(enrollmentData, Enrollment.class);
         enrollment.setPayment_status(false);
-        enrollment.setUser(userService.getUserById(enrollmentDto.getUserId()));
-        enrollment.setCourse(courseService.getById(enrollmentDto.getCourseId()));
+        enrollment.setUser(userService.getUserById(enrollmentData.getUserId()));
+        enrollment.setCourse(courseService.getById(enrollmentData.getCourseId()));
         return enrollmentRepository.save(enrollment);
     }
 

@@ -7,7 +7,7 @@ package co.id.mii.mcc63lmsserverside.service;
 
 import co.id.mii.mcc63lmsserverside.repository.ContentRepository;
 import co.id.mii.mcc63lmsserverside.model.Content;
-import co.id.mii.mcc63lmsserverside.model.Dto.ContentDto;
+import co.id.mii.mcc63lmsserverside.model.dto.ContentData;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Service
 public class ContentService {
-    
+
     private ContentRepository contentRepository;
     private ModuleService moduleService;
     private ModelMapper modelMapper;
@@ -36,28 +36,28 @@ public class ContentService {
     public List<Content> getAll() {
         return contentRepository.findAll();
     }
-    
+
     public Content getById(Long id) {
-        return contentRepository.findById(id).orElseThrow(() 
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not Found"));
+        return contentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Content not Found"));
     }
-    
-    public Content create(ContentDto contentDto) {
-        Content content = modelMapper.map(contentDto, Content.class);
-        content.setModule(moduleService.getById(contentDto.getModuleId()));
+
+    public Content create(ContentData contentData) {
+        Content content = modelMapper.map(contentData, Content.class);
+        content.setModule(moduleService.getById(contentData.getModuleId()));
         return contentRepository.save(content);
     }
-    
+
     public Content update(Long id, Content content) {
         Content c = getById(id);
         content.setId(id);
         content.setModule(c.getModule());
         return contentRepository.save(content);
     }
-    
+
     public Content delete(Long id) {
         Content content = getById(id);
         contentRepository.delete(content);
         return content;
-    }    
+    }
 }

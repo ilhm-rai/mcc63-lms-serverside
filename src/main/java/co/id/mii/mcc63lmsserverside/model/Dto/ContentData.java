@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package co.id.mii.mcc63lmsserverside.model.Dto;
+package co.id.mii.mcc63lmsserverside.model.dto;
 
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +16,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnrollmentDto {
+public class ContentData {
 
     private Long id;
-    private LocalDate enroll_date;
-    private LocalDate expire_date;
-    private Long userId;
-    private Long courseId;
+    private String title;
+    private String description;
+    private String videoUrl;
+    private Long moduleId;
 }
