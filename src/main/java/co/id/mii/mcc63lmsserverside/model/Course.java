@@ -5,8 +5,6 @@
  */
 package co.id.mii.mcc63lmsserverside.model;
 
-import co.id.mii.mcc63lmsserverside.model.Enrollment;
-import co.id.mii.mcc63lmsserverside.model.Module;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,32 +28,32 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Course {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String title;
-    
+
     @Column(nullable = false)
     private String description;
-    
+
     @Column(nullable = false)
     private Long price;
-    
+
     private Boolean isActive;
-    
+
     @ManyToOne
     private User user;
 
     @ManyToOne
     private Category category;
-    
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Module> modules;
-    
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Enrollment> enrollments;
 }

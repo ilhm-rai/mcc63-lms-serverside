@@ -5,7 +5,6 @@
  */
 package co.id.mii.mcc63lmsserverside.model;
 
-import co.id.mii.mcc63lmsserverside.model.Privilege;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -44,10 +43,6 @@ public class Role {
     private List<User> users;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "role_privilege",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "privilege_id")
-    )
+    @JoinTable(name = "role_privilege", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "privilege_id"))
     private List<Privilege> privileges;
 }
