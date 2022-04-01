@@ -5,7 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.ModuleDto;
+import co.id.mii.mcc63lmsserverside.model.dto.ModuleData;
 import co.id.mii.mcc63lmsserverside.model.Module;
 import co.id.mii.mcc63lmsserverside.service.ModuleService;
 import java.util.List;
@@ -47,8 +47,8 @@ public class ModuleController {
     }
 
     @PostMapping
-    public ResponseEntity<Module> create(@RequestBody ModuleDto moduleDto) {
-        return new ResponseEntity(moduleService.create(moduleDto), HttpStatus.CREATED);
+    public ResponseEntity<Module> create(@RequestBody ModuleData moduleData) {
+        return new ResponseEntity(moduleService.create(moduleData), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

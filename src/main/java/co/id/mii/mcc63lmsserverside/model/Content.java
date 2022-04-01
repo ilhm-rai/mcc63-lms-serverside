@@ -5,7 +5,6 @@
  */
 package co.id.mii.mcc63lmsserverside.model;
 
-import co.id.mii.mcc63lmsserverside.model.Module;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,20 +24,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Content {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String title;
-    
+
     @Column(nullable = false)
     private String description;
-    
+
     @Column(nullable = false)
     private String videoUrl;
-    
+
     @ManyToOne
     private Module module;
 }

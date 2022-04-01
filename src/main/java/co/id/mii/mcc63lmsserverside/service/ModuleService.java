@@ -5,7 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.service;
 
-import co.id.mii.mcc63lmsserverside.model.Dto.ModuleDto;
+import co.id.mii.mcc63lmsserverside.model.dto.ModuleData;
 import co.id.mii.mcc63lmsserverside.repository.ModuleRepository;
 import co.id.mii.mcc63lmsserverside.model.Module;
 import java.util.List;
@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Service
 public class ModuleService {
-    
+
     private ModuleRepository moduleRepository;
     private CourseService courseService;
     private ModelMapper modelMapper;
@@ -38,26 +38,26 @@ public class ModuleService {
     }
 
     public Module getById(Long id) {
-        return moduleRepository.findById(id).orElseThrow(() 
-                -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module not Found"));
+        return moduleRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Module not Found"));
     }
-    
-    public Module create(ModuleDto moduleDto) {
-        Module module = modelMapper.map(moduleDto, Module.class);
-        module.setCourse(courseService.getById(moduleDto.getCourseId()));
+
+    public Module create(ModuleData moduleData) {
+        Module module = modelMapper.map(moduleData, Module.class);
+        module.setCourse(courseService.getById(moduleData.getCourseId()));
         return moduleRepository.save(module);
     }
-    
+
     public Module update(Long id, Module module) {
         Module m = getById(id);
         module.setId(id);
         module.setCourse(m.getCourse());
         return moduleRepository.save(module);
     }
-    
+
     public Module delete(Long id) {
         Module module = getById(id);
         moduleRepository.delete(module);
         return module;
-    }    
+    }
 }
