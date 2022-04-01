@@ -5,6 +5,7 @@
  */
 package co.id.mii.mcc63lmsserverside.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,6 +39,7 @@ public class Module {
     @ManyToOne
     private Course course;
     
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "module", cascade = CascadeType.ALL)
     private List<Content> contents;
 }
