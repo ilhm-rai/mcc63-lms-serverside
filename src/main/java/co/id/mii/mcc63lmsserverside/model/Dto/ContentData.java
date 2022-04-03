@@ -8,6 +8,7 @@ package co.id.mii.mcc63lmsserverside.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -21,6 +22,6 @@ public class ContentData {
     private Long id;
     private String title;
     private String description;
-    private String videoUrl;
     private Long moduleId;
+    private MultipartFile file;
 }
