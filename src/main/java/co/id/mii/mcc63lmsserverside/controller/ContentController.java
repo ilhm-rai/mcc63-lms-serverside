@@ -56,12 +56,12 @@ public class ContentController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Content> create(@ModelAttribute ContentData contentData) throws IOException {
+    public ResponseEntity<Content> create(@ModelAttribute ContentData contentData) {
         return new ResponseEntity(contentService.create(contentData), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Content> update(@PathVariable Long id, @ModelAttribute ContentData contentData) throws IOException {
+    public ResponseEntity<Content> update(@PathVariable Long id, @ModelAttribute ContentData contentData) {
         return new ResponseEntity(contentService.update(id, contentData), HttpStatus.CREATED);
     }
 
