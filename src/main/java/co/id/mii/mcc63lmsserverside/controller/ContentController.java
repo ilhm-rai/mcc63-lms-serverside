@@ -55,6 +55,21 @@ public class ContentController {
         return new ResponseEntity(contentService.getById(id), HttpStatus.OK);
     }
 
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Content> create(@ModelAttribute ContentData contentData) throws IOException {
+        return new ResponseEntity(contentService.create(contentData), HttpStatus.CREATED);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Content> update(@PathVariable Long id, @ModelAttribute ContentData contentData) throws IOException {
+        return new ResponseEntity(contentService.update(id, contentData), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Content> delete(@PathVariable Long id) {
+        return new ResponseEntity(contentService.delete(id), HttpStatus.OK);
+    }
+    
     @GetMapping("/file/{filename:.+}")
     public ResponseEntity<?> getFile(@PathVariable("filename") String filename, HttpServletRequest request) {
         Resource fileResource = contentService.getFile(filename);
@@ -64,7 +79,7 @@ public class ContentController {
         try {
             contentType = request.getServletContext().getMimeType(fileResource.getFile().getAbsolutePath());
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not determine file type.");
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Could not determine file type.");
         }
 
         if (contentType == null) {
@@ -74,20 +89,5 @@ public class ContentController {
                 .contentType(parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
                 .body(fileResource);
-    }
-
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Content> create(@ModelAttribute ContentData contentData) throws IOException {
-        return new ResponseEntity(contentService.create(contentData), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Content> update(@PathVariable Long id, @RequestBody Content content) {
-        return new ResponseEntity(contentService.update(id, content), HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Content> delete(@PathVariable Long id) {
-        return new ResponseEntity(contentService.delete(id), HttpStatus.OK);
     }
 }
