@@ -31,19 +31,23 @@ public class User {
     @Column(name = "password", nullable = false, columnDefinition = "VARCHAR(255)")
     private String password;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1)")
-    private Boolean isActive;
+    @Column(name = "is_account_locked", columnDefinition = "TINYINT(1)")
+    private Boolean isAccountLocked = false;
+
+    @Column(name = "is_enabled", nullable = false, columnDefinition = "TINYINT(1)")
+    private Boolean isEnabled = false;
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    @OneToOne(mappedBy = "user", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Profile profile;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
