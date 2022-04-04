@@ -13,6 +13,9 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import org.modelmapper.ModelMapper;
@@ -46,6 +49,7 @@ public class ContentService {
 
     @Value("${file.upload-dir}")
     private Path fileStorageLocation;
+    private final List<String> contentTypes = Arrays.asList("application/pdf", "video/mp4", "video/webm", "video/mkv");
 
     public List<Content> getAll() {
         return contentRepository.findAll();
@@ -57,22 +61,34 @@ public class ContentService {
     }
 
     public Content create(ContentData contentData) {
-        Path targetLocation = setResource(contentData.getFile());
+        String fileContentType = contentData.getFile().getContentType();
 
-        Content content = modelMapper.map(contentData, Content.class);
-        content.setVideoUrl(targetLocation.toString());
-        content.setModule(moduleService.getById(contentData.getModuleId()));
-        return contentRepository.save(content);
+        if (contentTypes.contains(fileContentType)) {
+            Path targetLocation = setResource(contentData.getFile());
+
+            Content content = modelMapper.map(contentData, Content.class);
+            content.setVideoUrl(targetLocation.toString());
+            content.setModule(moduleService.getById(contentData.getModuleId()));
+            return contentRepository.save(content);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "File types are not allowed.");
+        }
     }
 
     public Content update(Long id, ContentData contentData) {
-        Path targetLocation = setResource(contentData.getFile());
+        String fileContentType = contentData.getFile().getContentType();
 
-        Content content = modelMapper.map(contentData, Content.class);
-        content.setId(id);
-        content.setVideoUrl(targetLocation.toString());
-        content.setModule(moduleService.getById(contentData.getModuleId()));
-        return contentRepository.save(content);
+        if (contentTypes.contains(fileContentType)) {
+            Path targetLocation = setResource(contentData.getFile());
+
+            Content content = modelMapper.map(contentData, Content.class);
+            content.setId(id);
+            content.setVideoUrl(targetLocation.toString());
+            content.setModule(moduleService.getById(contentData.getModuleId()));
+            return contentRepository.save(content);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "File types are not allowed.");
+        }
     }
 
     public Content delete(Long id) {
@@ -86,8 +102,7 @@ public class ContentService {
         try {
             String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
 
-            filename = filename.substring(0, filename.lastIndexOf("."))
-                    .replace(".", "") + "." + filename.substring(filename.lastIndexOf(".") + 1);
+            filename = filename.toLowerCase().replaceAll(" ", "-");
 
             targetLocation = fileStorageLocation.resolve(filename);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
