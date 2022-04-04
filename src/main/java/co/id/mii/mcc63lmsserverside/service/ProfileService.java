@@ -1,10 +1,8 @@
 package co.id.mii.mcc63lmsserverside.service;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import co.id.mii.mcc63lmsserverside.exception.UserNotFoundException;
 import co.id.mii.mcc63lmsserverside.model.Profile;
 import co.id.mii.mcc63lmsserverside.model.dto.ProfileData;
@@ -20,7 +18,6 @@ public class ProfileService {
   public ProfileService(ProfileRepository profileRepository, ModelMapper modelMapper) {
     this.profileRepository = profileRepository;
     this.modelMapper = modelMapper;
-    this.modelMapper.addMappings(profileMap);
   }
 
   public ProfileData getMyProfile(Long userId) {
@@ -46,12 +43,4 @@ public class ProfileService {
     return profileRepository.findById(userId)
         .orElseThrow(() -> new UserNotFoundException(userId));
   }
-
-  PropertyMap<ProfileData, Profile> profileMap = new PropertyMap<ProfileData, Profile>() {
-    @Override
-    protected void configure() {
-      skip().setId(null);
-      skip().setUser(null);
-    }
-  };
 }
