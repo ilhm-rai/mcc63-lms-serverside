@@ -6,6 +6,7 @@
 package co.id.mii.mcc63lmsserverside.repository;
 
 import co.id.mii.mcc63lmsserverside.model.Content;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
     
+    Optional<Content> findByVideoUrl(String url);
 }
