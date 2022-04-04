@@ -47,8 +47,8 @@ public class UserController {
   @PostMapping
   @ResponseBody
   @ResponseStatus(HttpStatus.CREATED)
-  public UserDataResponse registerNewUser(@RequestBody CreateUser createUser) {
-    return userService.addNewUser(createUser);
+  public String registerNewUser(@RequestBody CreateUser createUser) {
+    return userService.createUser(createUser);
   }
 
   @DeleteMapping(path = "{userId}")
