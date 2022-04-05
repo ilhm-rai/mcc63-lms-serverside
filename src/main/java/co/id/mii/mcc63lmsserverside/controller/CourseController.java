@@ -1,18 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
 import co.id.mii.mcc63lmsserverside.service.CourseService;
+import co.id.mii.mcc63lmsserverside.model.AppUser;
 import co.id.mii.mcc63lmsserverside.model.Course;
+import co.id.mii.mcc63lmsserverside.model.User;
 import co.id.mii.mcc63lmsserverside.model.dto.CourseData;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +44,11 @@ public class CourseController {
     @GetMapping
     public ResponseEntity<List<Course>> getAll() {
         return new ResponseEntity(courseService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("my")
+    public List<Course> myCourses(@AuthenticationPrincipal AppUser user) {
+        return courseService.myCourse(user.getId());
     }
 
     @GetMapping("/{id}")

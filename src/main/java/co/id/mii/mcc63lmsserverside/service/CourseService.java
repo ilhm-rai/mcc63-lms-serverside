@@ -1,10 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -30,7 +30,8 @@ public class CourseService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService,
+    public CourseService(CourseRepository courseRepository, UserService userService,
+            CategoryService categoryService,
             ModelMapper modelMapper) {
         this.courseRepository = courseRepository;
         this.userService = userService;
@@ -44,7 +45,12 @@ public class CourseService {
 
     public Course getById(Long id) {
         return courseRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not Found."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Course not Found."));
+    }
+
+    public List<Course> myCourse(Long userId) {
+        return courseRepository.findMyCourse(userId).orElse(new ArrayList<>());
     }
 
     public Course create(CourseData courseDto) {
