@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.service;
 
@@ -42,12 +41,13 @@ public class EnrollmentService {
 
     public Enrollment getById(Long id) {
         return enrollmentRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Enrollment not Found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Enrollment not Found"));
     }
 
     public Enrollment create(EnrollmentData enrollmentData) {
         Enrollment enrollment = modelMapper.map(enrollmentData, Enrollment.class);
-        enrollment.setPayment_status(false);
+        enrollment.setPaid(false);
         enrollment.setUser(userService.getUserById(enrollmentData.getUserId()));
         enrollment.setCourse(courseService.getById(enrollmentData.getCourseId()));
         return enrollmentRepository.save(enrollment);
