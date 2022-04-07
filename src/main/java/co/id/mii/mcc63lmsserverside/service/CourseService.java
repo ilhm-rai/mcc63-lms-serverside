@@ -44,20 +44,11 @@ public class CourseService {
     }
 
     public List<Course> getAll() {
-        return courseRepository.findAll()
-                .stream()
-                .map(c -> new Course(
-                        c.getId(),
-                        c.getTitle(),
-                        c.getDescription(),
-                        c.getPrice(),
-                        c.getIsActive(),
-                        toUri(c.getCourseImage()),
-                        c.getUser(),
-                        c.getCategory(),
-                        c.getModules(),
-                        c.getEnrollments()))
-                .collect(Collectors.toList());
+        return courseStream(courseRepository.findAll());
+    }
+
+    public List<Course> getCourseLimit(Long limit) {
+        return courseStream(courseRepository.getCourseLimit(limit));
     }
 
     public Course getById(Long id) {
@@ -105,5 +96,21 @@ public class CourseService {
         return MvcUriComponentsBuilder
                 .fromMethodName(CourseController.class, "getFile", filename)
                 .build().toUri().toString();
+    }
+
+    private List<Course> courseStream(List<Course> courses) {
+        return courses.stream()
+                .map(c -> new Course(
+                        c.getId(),
+                        c.getTitle(),
+                        c.getDescription(),
+                        c.getPrice(),
+                        c.getIsActive(),
+                        toUri(c.getCourseImage()),
+                        c.getUser(),
+                        c.getCategory(),
+                        c.getModules(),
+                        c.getEnrollments()))
+                .collect(Collectors.toList());
     }
 }
