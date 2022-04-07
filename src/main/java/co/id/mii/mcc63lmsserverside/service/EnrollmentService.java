@@ -7,6 +7,7 @@ package co.id.mii.mcc63lmsserverside.service;
 import co.id.mii.mcc63lmsserverside.model.dto.EnrollmentData;
 import co.id.mii.mcc63lmsserverside.repository.EnrollmentRepository;
 import co.id.mii.mcc63lmsserverside.model.Enrollment;
+import java.time.LocalDate;
 import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,8 @@ public class EnrollmentService {
 
     public Enrollment create(EnrollmentData enrollmentData) {
         Enrollment enrollment = modelMapper.map(enrollmentData, Enrollment.class);
+        enrollment.setEnrollDate(LocalDate.now());
+        enrollment.setExpireDate(LocalDate.now().plusMonths(3));
         enrollment.setPaid(false);
         enrollment.setUser(userService.getUserById(enrollmentData.getUserId()));
         enrollment.setCourse(courseService.getById(enrollmentData.getCourseId()));
