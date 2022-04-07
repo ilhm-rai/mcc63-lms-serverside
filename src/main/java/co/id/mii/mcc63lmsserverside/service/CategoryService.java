@@ -19,33 +19,37 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @Service
 public class CategoryService {
-    
+
     private CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
-    
+
     public List<Category> getAll() {
         return categoryRepository.findAll();
     }
-    
+
+    public List<Category> getCategoryLimit(Integer limit) {
+        return categoryRepository.getCategoryLimit(limit);
+    }
+
     public Category getById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(() 
+        return categoryRepository.findById(id).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.CREATED, "Category not Found."));
     }
-    
+
     public Category create(Category category) {
         return categoryRepository.save(category);
     }
-    
+
     public Category update(Long id, Category category) {
         getById(id);
         category.setId(id);
         return categoryRepository.save(category);
     }
-    
+
     public Category delete(Long id) {
         Category category = getById(id);
         categoryRepository.delete(category);

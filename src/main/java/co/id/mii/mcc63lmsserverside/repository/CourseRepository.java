@@ -23,6 +23,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
       nativeQuery = true)
   Optional<List<Course>> findMyCourse(Long userId);
 
-  @Query(value = "SELECT * FROM COURSE LIMIT ?1", nativeQuery = true)
+  @Query(value = "SELECT * FROM course LIMIT ?1", nativeQuery = true)
   List<Course> getCourseLimit(Long limit);
 }
