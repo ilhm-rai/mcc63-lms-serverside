@@ -33,7 +33,7 @@ public class PaymentController {
   public String confirm(@PathVariable("paymentId") Long paymentId) {
     return paymentService.paid(paymentId);
   }
-
+  
   @GetMapping("/files/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
