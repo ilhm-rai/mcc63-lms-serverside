@@ -38,11 +38,6 @@ public class PaymentController {
     return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.pay(request));
   }
 
-  @PostMapping("{paymentId}/confirm")
-  public String confirm(@PathVariable("paymentId") Long paymentId) {
-    return paymentService.paid(paymentId);
-  }
-
   @GetMapping("/files/{filename:.+}")
   @ResponseBody
   public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
