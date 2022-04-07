@@ -4,32 +4,22 @@
  */
 package co.id.mii.mcc63lmsserverside.service;
 
-import co.id.mii.mcc63lmsserverside.repository.ContentRepository;
-import co.id.mii.mcc63lmsserverside.util.StorageService;
-import net.bytebuddy.utility.RandomString;
-import co.id.mii.mcc63lmsserverside.model.Content;
-import co.id.mii.mcc63lmsserverside.model.dto.ContentData;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 import org.apache.commons.io.FilenameUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import co.id.mii.mcc63lmsserverside.controller.ContentController;
+import co.id.mii.mcc63lmsserverside.model.Content;
+import co.id.mii.mcc63lmsserverside.model.dto.ContentData;
+import co.id.mii.mcc63lmsserverside.repository.ContentRepository;
+import co.id.mii.mcc63lmsserverside.util.StorageService;
+import net.bytebuddy.utility.RandomString;
 
 /**
  *
@@ -54,7 +44,17 @@ public class ContentService {
     }
 
     public List<Content> getAll() {
-        return contentRepository.findAll();
+        return contentRepository.findAll()
+                .stream()
+                .map(c -> new Content(
+                        c.getId(),
+                        c.getTitle(),
+                        c.getDescription(),
+                        MvcUriComponentsBuilder
+                                .fromMethodName(ContentController.class, "getFile", c.getVideo())
+                                .build().toUri().toString(),
+                        c.getModule()))
+                .collect(Collectors.toList());
     }
 
     public Content getById(Long id) {

@@ -1,7 +1,9 @@
 package co.id.mii.mcc63lmsserverside.controller;
 
+import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,16 @@ public class PaymentController {
 
   private final PaymentService paymentService;
 
+  @GetMapping
+  @ResponseBody
+  public ResponseEntity<List<Payment>> getAll() {
+    return ResponseEntity.ok().body(paymentService.getAll());
+  }
+
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public Payment pay(@ModelAttribute PaymentRequest request) {
-    return paymentService.pay(request);
+  @ResponseBody
+  public ResponseEntity<Payment> pay(@ModelAttribute PaymentRequest request) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.pay(request));
   }
 
   @PostMapping("{paymentId}/confirm")
