@@ -1,11 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.controller;
 
 import co.id.mii.mcc63lmsserverside.service.ContentService;
+import co.id.mii.mcc63lmsserverside.util.StorageService;
 import co.id.mii.mcc63lmsserverside.model.Content;
 import co.id.mii.mcc63lmsserverside.model.dto.ContentData;
 import java.io.IOException;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -38,7 +39,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/content")
 public class ContentController {
 
-    private ContentService contentService;
+    private final ContentService contentService;
 
     @Autowired
     public ContentController(ContentService contentService) {
@@ -61,7 +62,8 @@ public class ContentController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Content> update(@PathVariable Long id, @ModelAttribute ContentData contentData) {
+    public ResponseEntity<Content> update(@PathVariable Long id,
+            @ModelAttribute ContentData contentData) {
         return new ResponseEntity(contentService.update(id, contentData), HttpStatus.CREATED);
     }
 
@@ -69,25 +71,12 @@ public class ContentController {
     public ResponseEntity<Content> delete(@PathVariable Long id) {
         return new ResponseEntity(contentService.delete(id), HttpStatus.OK);
     }
-    
-    @GetMapping("/file/{filename:.+}")
-    public ResponseEntity<?> getFile(@PathVariable("filename") String filename, HttpServletRequest request) {
-        Resource fileResource = contentService.getFile(filename);
 
-        String contentType = null;
-
-        try {
-            contentType = request.getServletContext().getMimeType(fileResource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Could not determine file type.");
-        }
-
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-        return ResponseEntity.ok()
-                .contentType(parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResource.getFilename() + "\"")
-                .body(fileResource);
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
+        Resource file = StorageService.loadAsResource("upload/module", filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 }
