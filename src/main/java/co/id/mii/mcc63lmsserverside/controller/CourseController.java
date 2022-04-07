@@ -84,4 +84,10 @@ public class CourseController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
+
+    @GetMapping("/limit/{limit}")
+    @ResponseBody
+    public ResponseEntity<List<Course>> getCourseLimit(@PathVariable Long limit) {
+        return ResponseEntity.ok(courseService.getCourseLimit(limit));
+    }
 }
