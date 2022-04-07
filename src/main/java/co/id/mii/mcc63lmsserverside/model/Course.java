@@ -44,6 +44,9 @@ public class Course {
     @Column(columnDefinition = "TINYINT(1)")
     private Boolean isActive;
 
+    @Column(nullable = false)
+    private String courseImage;
+
     @ManyToOne
     private User user;
 

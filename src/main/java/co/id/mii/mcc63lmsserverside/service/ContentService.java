@@ -29,7 +29,7 @@ import net.bytebuddy.utility.RandomString;
 public class ContentService {
 
     private final List<String> contentTypes =
-            Arrays.asList("application/pdf", "video/mp4", "video/webm", "video/mkv");
+            Arrays.asList("video/mp4", "video/webm", "video/mkv");
 
     private ContentRepository contentRepository;
     private ModuleService moduleService;
@@ -50,17 +50,17 @@ public class ContentService {
                         c.getId(),
                         c.getTitle(),
                         c.getDescription(),
-                        MvcUriComponentsBuilder
-                                .fromMethodName(ContentController.class, "getFile", c.getVideo())
-                                .build().toUri().toString(),
+                        toUri(c.getVideo()),
                         c.getModule()))
                 .collect(Collectors.toList());
     }
 
     public Content getById(Long id) {
-        return contentRepository.findById(id)
+        Content content = contentRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Content not Found"));
+        content.setVideo(toUri(content.getVideo()));
+        return content;
     }
 
     public Content create(ContentData contentData) {
@@ -106,5 +106,11 @@ public class ContentService {
         Content content = getById(id);
         contentRepository.delete(content);
         return content;
+    }
+
+    private String toUri(String filename) {
+        return MvcUriComponentsBuilder
+                .fromMethodName(ContentController.class, "getFile", filename)
+                .build().toUri().toString();
     }
 }
