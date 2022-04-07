@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import co.id.mii.mcc63lmsserverside.controller.PaymentController;
 import co.id.mii.mcc63lmsserverside.model.Enrollment;
@@ -28,12 +30,17 @@ public class PaymentService {
         .map(p -> new Payment(
             p.getId(),
             p.getEnrollment(),
-            MvcUriComponentsBuilder
-                .fromMethodName(PaymentController.class, "getFile", p.getPaymentSlip())
-                .build().toUri().toString(),
+            toUri(p.getPaymentSlip()),
             p.getUploadedAt(),
             p.getConfirmedAt()))
         .collect(Collectors.toList());
+  }
+
+  public Payment getById(long id) {
+    Payment payment = paymentRepository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Payment not Found"));
+    payment.setPaymentSlip(toUri(payment.getPaymentSlip()));
+    return payment;
   }
 
   public Payment pay(PaymentRequest request) {
@@ -66,6 +73,12 @@ public class PaymentService {
     payment.setConfirmedAt(LocalDateTime.now());
 
     return "Payment confirmed. Good luck and have fun learning!";
+  }
+
+  private String toUri(String filename) {
+    return MvcUriComponentsBuilder
+        .fromMethodName(PaymentController.class, "getFile", filename)
+        .build().toUri().toString();
   }
 
 }
