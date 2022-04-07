@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.repository;
 
@@ -16,6 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
-    
-    Optional<Content> findByVideoUrl(String url);
+
+    Optional<Content> findByVideo(String filename);
 }

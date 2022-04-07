@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package co.id.mii.mcc63lmsserverside.model;
 
@@ -42,6 +41,7 @@ public class Course {
     @Column(nullable = false)
     private Long price;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private Boolean isActive;
 
     @ManyToOne

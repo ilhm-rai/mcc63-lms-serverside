@@ -8,7 +8,7 @@ import co.id.mii.mcc63lmsserverside.model.Enrollment;
 import co.id.mii.mcc63lmsserverside.model.Payment;
 import co.id.mii.mcc63lmsserverside.model.dto.request.PaymentRequest;
 import co.id.mii.mcc63lmsserverside.repository.PaymentRepository;
-import co.id.mii.mcc63lmsserverside.util.FileUpload;
+import co.id.mii.mcc63lmsserverside.util.StorageService;
 import lombok.AllArgsConstructor;
 import net.bytebuddy.utility.RandomString;
 
@@ -28,7 +28,7 @@ public class PaymentService {
     String paymentSlip = RandomString.make(20) + "."
         + FilenameUtils.getExtension(request.getPaymentSlip().getOriginalFilename());
 
-    FileUpload.store("upload/payment", paymentSlip, request.getPaymentSlip());
+    StorageService.store("upload/payment", paymentSlip, request.getPaymentSlip());
 
     Payment payment = new Payment(
         paymentSlip,
